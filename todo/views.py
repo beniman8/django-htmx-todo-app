@@ -11,6 +11,17 @@ def todo(request):
 
     return render(request,'todo/index.html',{'todos':todos})
 
+@require_http_methods(['POST','GET'])
+def edit_todo(request,pk):
+    todo = Name.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        todo.title = request.POST.get('title','')
+        todo.save()
+        return render(request,'todo/partial.html',{'todo':todo})
+
+    return render(request,'todo/edit.html',{'todo':todo})
+
 
 @require_http_methods(['POST'])
 def add_todo(request):
